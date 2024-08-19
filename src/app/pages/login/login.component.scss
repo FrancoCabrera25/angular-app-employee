@@ -1,0 +1,35 @@
+.center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  & .card-container {
+    width: 400px;
+    height: 400px;
+    margin-top: 2rem;
+    padding: 10px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    & .title {
+      font-size: 30px;
+      line-height: 20px;
+      margin-bottom: 24px;
+    }
+    & .full-width {
+      width: 100%;
+    }
+    & .input-container {
+      margin-bottom: 10px;
+    }
+    & .btn-login {
+      margin-top: 10px;
+      background-color: grey;
+      color: white;
+    }
+    & .error {
+      color: red;
+      margin-top: 10px;
+    }
+  }
+}

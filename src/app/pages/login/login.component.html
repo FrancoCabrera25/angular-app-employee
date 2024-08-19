@@ -1,0 +1,62 @@
+<div class="center-content">
+  <form autocomplete="off" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-card class="card-container">
+      <h1 class="title">Login</h1>
+      <mat-form-field class="full-width input-container">
+        <mat-label>Enter your email</mat-label>
+        <input matInput formControlName="email" />
+        @if (isValidField('email')) {
+        <mat-error>{{ getFieldError("email") }}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Enter your password</mat-label>
+        <input matInput [type]="hide() ? 'password' : 'text'" />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="clickEvent($event)"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide()"
+        >
+          <mat-icon>{{ hide() ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+        @if (isValidField('password')) {
+        <mat-error>{{ getFieldError("password") }}</mat-error>
+        }
+      </mat-form-field>
+
+      <!--       <mat-form-field class="full-width">
+        <mat-label>Enter your password</mat-label>
+        <input
+          matInput
+          [type]="hide ? 'password' : 'text'"
+          formControlName="password"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+        @if (isValidField('password')) {
+        <mat-error>{{ getFieldError("password") }}</mat-error>
+        }
+      </mat-form-field> -->
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        class="full-width btn-login"
+      >
+        Login
+      </button>
+      @if (errorLogin) {
+      <span class="error">{{ errorLogin }}</span>
+      }
+    </mat-card>
+  </form>
+</div>
