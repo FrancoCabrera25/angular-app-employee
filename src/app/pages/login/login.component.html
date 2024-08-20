@@ -11,10 +11,11 @@
       </mat-form-field>
       <mat-form-field class="full-width">
         <mat-label>Enter your password</mat-label>
-        <input matInput [type]="hide() ? 'password' : 'text'" />
+        <input matInput [type]="hide() ? 'password' : 'text'" formControlName="password" />
         <button
           mat-icon-button
           matSuffix
+          type="button"
           (click)="clickEvent($event)"
           [attr.aria-label]="'Hide password'"
           [attr.aria-pressed]="hide()"

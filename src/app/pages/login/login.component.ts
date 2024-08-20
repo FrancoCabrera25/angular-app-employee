@@ -10,8 +10,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -22,15 +28,15 @@ import { Router } from '@angular/router';
     MatIconModule,
     MatButtonModule,
     MatCardModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class LoginComponent {
+  private authService = inject(AuthService);
   private fb = inject(FormBuilder);
-  /* private authService = inject(AuthService); */
   private router = inject(Router);
   public hide = signal(true);
   public errorLogin?: string;
@@ -69,17 +75,24 @@ export default class LoginComponent {
   }
   onSubmit(): void {
     if (this.form.valid) {
-    /*   this.authService
-        .login(this.formValues)
+      const { email, password } = this.form.getRawValue();
+      this.authService
+        .login(email, password)
         .pipe()
         .subscribe({
-          next: () => {
-            this.router.navigate(['product-list']);
+          next: ({ user }) => {
+            if (user.role === 'ADMIN') {
+              this.router.navigate(['employee/list']);
+            } else if (user.role === 'USER') {
+              this.router.navigate(['employee/profile']);
+            } else {
+              console.log('no role');
+            }
           },
           error: (error) => {
             this.errorLogin = error;
           },
-        }); */
+        });
     }
   }
 }
