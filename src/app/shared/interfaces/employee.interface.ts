@@ -14,3 +14,6 @@ export interface Employee {
   active: boolean;
   id: string;
 }
+export interface JobsPositionsResponse {
+  positions: string[];
+}

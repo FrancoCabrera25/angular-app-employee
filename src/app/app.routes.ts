@@ -13,13 +13,13 @@ export const routes: Routes = [
     children: [
       {
         path: 'list',
-        loadComponent: () => import('./pages/employee/list/list.component'),
+        loadComponent: () => import('./pages/employee/employee-list/employee-list.component'),
       },
 
       {
         path: 'profile',
         loadComponent: () =>
-          import('./pages/employee/profile/profile.component'),
+          import('./pages/employee/employee-profile/employee-profile.component'),
       },
     ],
   },

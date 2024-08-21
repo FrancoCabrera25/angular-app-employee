@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     CommonModule,
   ],
   template: `<p>profile works!</p>`,
-  styleUrl: './profile.component.scss',
+  styleUrl: './employee-profile.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class ProfileComponent { }
+export default class EmployeeProfileComponent { }

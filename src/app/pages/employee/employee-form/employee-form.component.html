@@ -1,0 +1,42 @@
+<h2 mat-dialog-title>Delete file</h2>
+<form autocomplete="off" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content class="content">
+    <mat-form-field appearance="fill">
+      <mat-label>Nombre</mat-label>
+      <input matInput placeholder="Nombre" formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Apellido</mat-label>
+      <input matInput placeholder="Apellido" formControlName="lastName">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="Email" formControlName="email">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Fecha nacimiento</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="birthdate">
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Posición</mat-label>
+      <select matNativeControl formControlName="position">
+        @for ( item of jobsPositionsList ; track item) {
+          <option [value]="item">{{ item }}</option>
+        }
+      </select>
+    </mat-form-field>
+
+    <mat-slide-toggle formControlName="active" labelPosition="before">Activo</mat-slide-toggle>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>No</button>
+    <button mat-button mat-dialog-close cdkFocusInitial>Ok</button>
+  </mat-dialog-actions>
+</form>
