@@ -1,8 +1,15 @@
 .button-add-container {
-  margin: 20px;
+  margin-bottom: 20px;
   display: flex;
   justify-content: flex-end;
 }
 table {
   width: 100%;
+}
+
+.header-list {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: flex-start;
 }

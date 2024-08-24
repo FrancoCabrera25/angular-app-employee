@@ -6,14 +6,15 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { EmployeeService } from '../../../core/services/employee.service';
 import { Employee } from '../../../shared/interfaces/employee.interface';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { EmployeeFormComponent } from '../employee-form/employee-form.component';
+import { EmployeeFilterComponent } from '../employee-filter/employee-filter.component';
 @Component({
   selector: 'app-list',
   standalone: true,
@@ -24,6 +25,7 @@ import { EmployeeFormComponent } from '../employee-form/employee-form.component'
     MatIconModule,
     MatButtonModule,
     MatDialogModule,
+    EmployeeFilterComponent,
   ],
   templateUrl: './employee-list.component.html',
   styleUrl: './employee-list.component.scss',
@@ -42,22 +44,54 @@ export default class EmployeeListComponent implements OnInit {
   ];
   dataSource = signal<Employee[]>([]);
   totalPage = 0;
-  indexPage = 1;
-  pageSize = 10;
+
+  pageIndex: number = 1;
+  pageSize: number = 10;
 
   ngOnInit(): void {
-    this.employeeService.getListEmployee().subscribe({
-      next: ({ employees, total, page }) => {
-        this.dataSource.set(employees);
-        this.totalPage = total;
-        this.indexPage = page;
-      },
-    });
+    this.loadEmployee();
   }
 
-  public onAddEmployee(): void {
-    this.dialog.open(EmployeeFormComponent, {
-      width: '600px',
-    });
+  public loadEmployee(filterName = ''): void {
+    this.employeeService
+      .getListEmployee(this.pageIndex, this.pageSize, filterName)
+      .subscribe({
+        next: ({ employees, total }) => {
+          this.dataSource.set(employees);
+          this.totalPage = total;
+        },
+      });
+  }
+
+  public edit(employee: Employee): void {
+    this.showDialog(employee);
+  }
+
+  public add(): void {
+    this.showDialog();
+  }
+
+  public showDialog(data?: Employee): void {
+    this.dialog
+      .open(EmployeeFormComponent, {
+        width: '700px',
+        data,
+      })
+      .afterClosed()
+      .subscribe({
+        next: (result) => {
+          if (result) this.loadEmployee();
+        },
+      });
+  }
+
+  public searchByName(value: string): void {
+    this.loadEmployee(value);
+  }
+
+  changePage({ pageIndex, pageSize }: PageEvent): void {
+    this.pageIndex = pageIndex + 1;
+    this.pageSize = pageSize;
+    this.loadEmployee();
   }
 }
