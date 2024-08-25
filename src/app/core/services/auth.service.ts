@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
@@ -16,10 +16,13 @@ export class AuthService {
 
   private _currentToken = signal<string>('');
   public currentToken = this._currentToken.asReadonly();
-  private currentUser = signal<User | null>(null);
-
+  private _currentUser = signal<User | null>(null);
+  public isAuthenticated = computed<boolean>(() => !!this.currentToken());
+  public userRole = computed<string>(() => this._currentUser()?.role ?? '');
   constructor() {
-    this.setToken(localStorage.getItem('token') ?? '');
+    this._currentToken.set(localStorage.getItem('token') ?? '');
+    const user = (JSON.parse(localStorage.getItem('user')!) as User) ?? null;
+    this._currentUser.set(user);
   }
 
   login(email: string, password: string): Observable<UserLoginResponse> {
@@ -30,7 +33,7 @@ export class AuthService {
       })
       .pipe(
         map((response) => {
-          this.currentUser.set(response.user);
+          this.setUserLogged(response.user);
           this.setToken(response.token);
           return response;
         })
@@ -40,5 +43,15 @@ export class AuthService {
   private setToken(token: string) {
     this._currentToken.set(token);
     localStorage.setItem('token', token);
+  }
+
+  private setUserLogged(user: User | null) {
+    this._currentUser.set(user);
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  public loguout(): void {
+    this.setToken('');
+    this.setUserLogged(null);
   }
 }

@@ -7,6 +7,17 @@ table {
   width: 100%;
 }
 
+.table-container {
+  position: relative;
+  min-height: 200px;
+  max-height: 400px;
+  overflow: auto;
+}
+
+.mat-elevation-z8 {
+  overflow-x: auto;
+ }
+
 .header-list {
   display: flex;
   align-items: center;
